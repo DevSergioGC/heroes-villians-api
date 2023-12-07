@@ -2,12 +2,12 @@
   "name": "heroes-villians-api",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "src/server.js",
   "scripts": {
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "format": "prettier --write .",
-    "dev": "nodemon ./src/app.js"
+    "dev": "nodemon src/server.js"
   },
   "keywords": [],
   "author": "",
@@ -24,6 +24,7 @@
     }
   },
   "devDependencies": {
+    "dotenv": "^16.3.1",
     "eslint": "^8.55.0",
     "eslint-config-standard": "^17.1.0",
     "eslint-plugin-import": "^2.29.0",
