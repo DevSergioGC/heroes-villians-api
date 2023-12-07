@@ -1,4 +1,4 @@
-import Joi from 'joi'
+const Joi = require('joi')
 
 const personSchema = Joi.object({
   name: Joi.string().required(),
