@@ -3,7 +3,7 @@ const {
   httpGetAllRoles,
   httpGetRoleById,
   httpCreateRole
-} = require('./user.controller')
+} = require('./role.controller')
 
 const router = express.Router()
 
