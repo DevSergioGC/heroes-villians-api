@@ -16,6 +16,5 @@ const Villian = sequelize.define('villian', {
 })
 
 Villian.belongsTo(Person)
-Person.hasOne(Villian)
 
 module.exports = Villian

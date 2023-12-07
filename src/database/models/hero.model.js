@@ -16,6 +16,5 @@ const Hero = sequelize.define('hero', {
 })
 
 Hero.belongsTo(Person)
-Person.hasOne(Hero)
 
 module.exports = Hero
