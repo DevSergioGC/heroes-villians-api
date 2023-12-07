@@ -3,7 +3,7 @@ const sequelize = require('./database/db')
 
 // ? Routes
 const personRoutes = require('./routes/person/person.router')
-// const heroRoutes = require('./routes/hero/hero.router')
+const heroRoutes = require('./routes/hero/hero.router')
 // const villianRoutes = require('./routes/villian/villian.router')
 const roleRoutes = require('./routes/role/role.router')
 const userRoutes = require('./routes/user/user.router')
@@ -20,7 +20,7 @@ const app = express()
 app.use(express.json())
 
 app.use('/person', personRoutes)
-// app.use('/hero', heroRoutes)
+app.use('/hero', heroRoutes)
 // app.use('/villian', villianRoutes)
 app.use('/role', roleRoutes)
 app.use('/user', userRoutes)

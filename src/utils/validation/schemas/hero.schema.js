@@ -1,8 +1,7 @@
 const Joi = require('joi')
 
 const heroSchema = Joi.object({
-  principalPower: Joi.string().required(),
-  personId: Joi.number().required()
+  principalPower: Joi.string().required()
 })
 
 const updateHeroSchema = Joi.object({

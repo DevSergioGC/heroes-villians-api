@@ -15,6 +15,9 @@ const Hero = sequelize.define('hero', {
   }
 })
 
-Hero.belongsTo(Person)
+Hero.belongsTo(Person, {
+  foreignKey: 'personId',
+  as: 'person'
+})
 
 module.exports = Hero
