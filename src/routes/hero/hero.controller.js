@@ -101,8 +101,7 @@ const httpDeleteHero = async (req, res) => {
   const { heroId } = req.params
   try {
     const { personId } = await getHeroById(heroId)
-    // eslint-disable-next-line no-unused-vars
-    const person = await deletePerson(personId)
+    await deletePerson(personId)
     const heroDeleted = await deleteHero(heroId)
     res.status(200).json(heroDeleted)
   } catch (error) {
