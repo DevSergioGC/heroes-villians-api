@@ -6,6 +6,10 @@ const {
 } = require('./schemas/villian.schema')
 const { roleSchema, updateRoleSchema } = require('./schemas/role.schema')
 const { userSchema } = require('./schemas/user.schema')
+const {
+  locationSchema,
+  updateLocationSchema
+} = require('./schemas/location.schema')
 
 const validatePerson = (data) => personSchema.validate(data)
 const validateUpdatePerson = (data) => updatePersonSchema.validate(data)
@@ -16,6 +20,8 @@ const validateUpdateVillian = (data) => updateVillianSchema.validate(data)
 const validateRole = (data) => roleSchema.validate(data)
 const validateUpdateRole = (data) => updateRoleSchema.validate(data)
 const validateUser = (data) => userSchema.validate(data)
+const validateLocation = (data) => locationSchema.validate(data)
+const validateUpdateLocation = (data) => updateLocationSchema.validate(data)
 
 module.exports = {
   validatePerson,
@@ -26,5 +32,7 @@ module.exports = {
   validateUpdateVillian,
   validateRole,
   validateUpdateRole,
-  validateUser
+  validateUser,
+  validateLocation,
+  validateUpdateLocation
 }
