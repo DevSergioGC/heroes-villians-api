@@ -12,6 +12,8 @@ const userRoutes = require('./routes/user/user.router')
 const Person = require('./database/models/person.model')
 const Hero = require('./database/models/hero.model')
 const Villian = require('./database/models/villian.model')
+const Role = require('./database/models/role.model')
+const User = require('./database/models/user.model')
 
 const app = express()
 
