@@ -2,11 +2,11 @@ const {
   getAllRoles,
   getRoleById,
   createRole
-} = require('../../services/user.service')
+} = require('../../services/role.service')
 
 const httpGetAllRoles = async (req, res) => {
   try {
-    const roles = await getAllRoles
+    const roles = await getAllRoles()
     res.status(200).json(roles)
   } catch (error) {
     res.status(500).json({ message: error.message })

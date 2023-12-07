@@ -1,4 +1,4 @@
-const Role = require('../models/role.model')
+const Role = require('../database/models/role.model')
 
 const getAllRoles = async () => {
   return await Role.findAll()
