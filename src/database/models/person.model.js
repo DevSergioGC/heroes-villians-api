@@ -10,8 +10,7 @@ const Person = sequelize.define('person', {
   name: {
     type: DataTypes.STRING,
     allowNull: false,
-    required: true,
-    unique: true
+    required: true
   },
   age: DataTypes.INTEGER
 })

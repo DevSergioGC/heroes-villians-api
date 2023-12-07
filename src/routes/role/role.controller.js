@@ -14,13 +14,9 @@ const httpGetAllRoles = async (req, res) => {
   }
 }
 const httpGetRoleById = async (req, res) => {
-  try {
-    const { roleId } = req.params
-    const role = await getRoleById(roleId)
-    res.status(200).json(role)
-  } catch (error) {
-    res.status(500).json({ message: error.message })
-  }
+  const { roleId } = req.params
+  const role = await getRoleById(roleId)
+  res.status(200).json(role)
 }
 const httpCreateRole = async (req, res) => {
   const { error } = validateRole(req.body)
