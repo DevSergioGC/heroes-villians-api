@@ -1,5 +1,6 @@
 const DataTypes = require('sequelize')
 const sequelize = require('../db.js')
+// const Role = require('./role.model.js')
 
 const User = sequelize.define('user', {
   id: {
@@ -19,5 +20,7 @@ const User = sequelize.define('user', {
     required: true
   }
 })
+
+// User.belongsTo(Role, { foreignKey: 'roleId', as: 'role' })
 
 module.exports = User

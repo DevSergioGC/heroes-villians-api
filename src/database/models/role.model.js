@@ -2,7 +2,7 @@ const DataTypes = require('sequelize')
 const sequelize = require('../db.js')
 const User = require('./user.model.js')
 
-const Roles = sequelize.define('roles', {
+const Role = sequelize.define('role', {
   id: {
     type: DataTypes.INTEGER,
     primaryKey: true,
@@ -17,6 +17,6 @@ const Roles = sequelize.define('roles', {
   description: DataTypes.STRING
 })
 
-Roles.hasMany(User, { foreignKey: 'roleId', sourceKey: 'id' })
+Role.hasMany(User, { foreignKey: 'roleId', sourceKey: 'id' }, { onDelete: 'restrict' })
 
-module.exports = Roles
+module.exports = Role
