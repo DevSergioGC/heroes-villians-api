@@ -3,15 +3,7 @@ const Person = require('../database/models/person.model')
 
 const getAllLocations = async () => {
   try {
-    const locations = await Location.findAll({
-      include: [
-        {
-          model: Person,
-          as: 'persons',
-          attributes: ['name', 'age']
-        }
-      ]
-    })
+    const locations = await Location.findAll()
     if (!locations || locations.length === 0) {
       return { status: 404, response: { error: 'No locations found' } }
     }
@@ -22,15 +14,7 @@ const getAllLocations = async () => {
 }
 const getLocationById = async (locationId) => {
   try {
-    const location = await Location.findByPk(locationId, {
-      include: [
-        {
-          model: Person,
-          as: 'persons',
-          attributes: ['name', 'age']
-        }
-      ]
-    })
+    const location = await Location.findByPk(locationId)
     if (!location || location.length === 0) {
       return { status: 404, response: { error: 'Location does not exist' } }
     }
@@ -43,6 +27,25 @@ const createLocation = async (location) => {
   try {
     const newLocation = await Location.create(location)
     return { status: 201, response: newLocation }
+  } catch (error) {
+    return { status: 500, response: { error: error.message } }
+  }
+}
+const assignLocation = async (locationId, personId) => {
+  try {
+    const location = await Location.findByPk(locationId)
+    const person = await Person.findByPk(personId)
+
+    if (!location || location.length === 0) {
+      return { status: 404, response: { error: 'Location does not exist' } }
+    }
+    if (!person || person.length === 0) {
+      return { status: 404, response: { error: 'Person does not exist' } }
+    }
+
+    const assign = await Location.assignNewLocation(locationId, personId)
+    // person.setLocation(location)
+    return { status: 200, response: assign }
   } catch (error) {
     return { status: 500, response: { error: error.message } }
   }
@@ -79,6 +82,7 @@ module.exports = {
   getAllLocations,
   getLocationById,
   createLocation,
+  assignLocation,
   updateLocation,
   deleteLocation
 }

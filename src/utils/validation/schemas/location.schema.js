@@ -10,7 +10,13 @@ const updateLocationSchema = Joi.object({
   address: Joi.string()
 })
 
+const assignLocationSchema = Joi.object({
+  personId: Joi.number().integer().required(),
+  locationId: Joi.number().integer().required()
+})
+
 module.exports = {
   locationSchema,
-  updateLocationSchema
+  updateLocationSchema,
+  assignLocationSchema
 }

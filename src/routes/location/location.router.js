@@ -3,9 +3,10 @@ const {
   httpGetAllLocations,
   httpGetLocationById,
   httpCreateLocation,
+  httpAssignLocation,
   httpUpdateLocation,
   httpDeleteLocation
-} = require('./role.controller')
+} = require('./location.controller')
 
 const router = express.Router()
 
@@ -13,6 +14,7 @@ router
   .get('/', httpGetAllLocations)
   .get('/:locationId', httpGetLocationById)
   .post('/', httpCreateLocation)
+  .post('/assign', httpAssignLocation)
   .put('/:locationId', httpUpdateLocation)
   .delete('/:locationId', httpDeleteLocation)
 

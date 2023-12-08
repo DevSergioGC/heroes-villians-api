@@ -2,12 +2,14 @@ const {
   getAllLocations,
   getLocationById,
   createLocation,
+  assignLocation,
   updateLocation,
   deleteLocation
 } = require('../../services/location.service')
 const {
   validateLocation,
-  validateUpdateLocation
+  validateUpdateLocation,
+  validateAssignLocation
 } = require('../../utils/validation/validation')
 
 const httpGetAllLocations = async (req, res) => {
@@ -40,6 +42,20 @@ const httpCreateLocation = async (req, res) => {
       address
     }
     const location = await createLocation(newLocation)
+    res.status(location.status).json(location.response)
+  } catch (error) {
+    res.status(500).json({ error: error.message })
+  }
+}
+const httpAssignLocation = async (req, res) => {
+  try {
+    const { error } = validateAssignLocation(req.body)
+    if (error) {
+      res.status(400).send({ error: error.details[0].message })
+    }
+
+    const { personId, locationId } = req.body
+    const location = await assignLocation(locationId, personId)
     res.status(location.status).json(location.response)
   } catch (error) {
     res.status(500).json({ error: error.message })
@@ -78,6 +94,7 @@ module.exports = {
   httpGetAllLocations,
   httpGetLocationById,
   httpCreateLocation,
+  httpAssignLocation,
   httpUpdateLocation,
   httpDeleteLocation
 }

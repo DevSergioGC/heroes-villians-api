@@ -1,7 +1,17 @@
 const Person = require('../database/models/person.model')
+const Location = require('../database/models/location.model')
 
 const getAllPersons = async () => {
-  const person = await Person.findAll()
+  const person = await Person.findAll({
+    attributes: ['name', 'age'],
+    include: [
+      {
+        model: Location,
+        as: 'location',
+        attributes: ['name', 'address']
+      }
+    ]
+  })
   if (!person || person.length === 0) {
     return { error: 'No person found' }
   }

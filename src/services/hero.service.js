@@ -1,12 +1,16 @@
 const Person = require('../database/models/person.model')
 const Hero = require('../database/models/hero.model')
+// const Location = require('../database/models/location.model')
 
 const getAllHeroes = async () => {
   const heroes = await Hero.findAll({
+    attributes: ['principalPower'],
     include: [
       {
         model: Person,
-        as: 'person'
+        as: 'heroPerson',
+        foreignKey: 'personId',
+        attributes: ['name', 'age']
       }
     ]
   })
@@ -18,10 +22,12 @@ const getAllHeroes = async () => {
 }
 const getHeroById = async (heroId) => {
   const hero = await Hero.findByPk(heroId, {
+    attributes: ['principalPower'],
     include: [
       {
         model: Person,
-        as: 'person'
+        as: 'person',
+        attributes: ['name', 'age']
       }
     ]
   })
