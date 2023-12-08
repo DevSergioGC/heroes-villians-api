@@ -3,15 +3,18 @@ const {
   httpGetAllUsers,
   httpGetUserById,
   httpCreateUser,
+  httpLoginUser,
   httpDeleteUser
 } = require('./user.controller')
+const { authenticateJWT, isAdmin } = require('../../utils/jwt.middleware')
 
 const router = express.Router()
 
 router
-  .get('/', httpGetAllUsers)
-  .get('/:userId', httpGetUserById)
-  .post('/', httpCreateUser)
-  .delete('/:userId', httpDeleteUser)
+  .get('/', authenticateJWT, isAdmin, httpGetAllUsers)
+  .get('/:userId', authenticateJWT, isAdmin, httpGetUserById)
+  .post('/', authenticateJWT, isAdmin, httpCreateUser)
+  .post('/login', authenticateJWT, isAdmin, httpLoginUser)
+  .delete('/:userId', authenticateJWT, isAdmin, httpDeleteUser)
 
 module.exports = router
