@@ -6,14 +6,15 @@ const {
   httpUpdateVillian,
   httpDeleteVillian
 } = require('./villian.controller')
+const { authenticateJWT, isAdmin } = require('../../utils/jwt.middleware')
 
 const router = express.Router()
 
 router
-  .get('/', httpGetAllVillians)
-  .get('/:villianId', httpGetVillianById)
-  .post('/', httpCreateVillian)
-  .put('/:villianId', httpUpdateVillian)
-  .delete('/:villianId', httpDeleteVillian)
+  .get('/', authenticateJWT, httpGetAllVillians)
+  .get('/:villianId', authenticateJWT, httpGetVillianById)
+  .post('/', authenticateJWT, isAdmin, httpCreateVillian)
+  .put('/:villianId', authenticateJWT, isAdmin, httpUpdateVillian)
+  .delete('/:villianId', authenticateJWT, isAdmin, httpDeleteVillian)
 
 module.exports = router

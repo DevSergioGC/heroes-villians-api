@@ -7,15 +7,16 @@ const {
   httpUpdateLocation,
   httpDeleteLocation
 } = require('./location.controller')
+const { authenticateJWT, isAdmin } = require('../../utils/jwt.middleware')
 
 const router = express.Router()
 
 router
-  .get('/', httpGetAllLocations)
-  .get('/:locationId', httpGetLocationById)
-  .post('/', httpCreateLocation)
-  .post('/assign', httpAssignLocation)
-  .put('/:locationId', httpUpdateLocation)
-  .delete('/:locationId', httpDeleteLocation)
+  .get('/', authenticateJWT, httpGetAllLocations)
+  .get('/:locationId', authenticateJWT, httpGetLocationById)
+  .post('/', authenticateJWT, isAdmin, httpCreateLocation)
+  .post('/assign', authenticateJWT, isAdmin, httpAssignLocation)
+  .put('/:locationId', authenticateJWT, isAdmin, httpUpdateLocation)
+  .delete('/:locationId', authenticateJWT, isAdmin, httpDeleteLocation)
 
 module.exports = router

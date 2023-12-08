@@ -1,6 +1,6 @@
 const DataTypes = require('sequelize')
 const sequelize = require('../db.js')
-// const Role = require('./role.model.js')
+const bcrypt = require('bcrypt')
 
 const User = sequelize.define('user', {
   id: {
@@ -19,13 +19,17 @@ const User = sequelize.define('user', {
     allowNull: false,
     required: true
   },
-  is_admin: {
+  isAdmin: {
     type: DataTypes.BOOLEAN,
     allowNull: false,
     required: true,
     defaultValue: false
   }
 })
+
+User.checkPassword = (password, userPassword) => {
+  return bcrypt.compareSync(password, userPassword)
+}
 
 // User.belongsTo(Role, { foreignKey: 'roleId', as: 'role' })
 
