@@ -3,10 +3,12 @@ const Villian = require('../database/models/villian.model')
 
 const getAllVillians = async () => {
   const villians = await Villian.findAll({
+    attributes: ['threatStyle'],
     include: [
       {
         model: Person,
-        as: 'person'
+        as: 'villianPerson',
+        attributes: ['name', 'age']
       }
     ]
   })
@@ -18,10 +20,12 @@ const getAllVillians = async () => {
 }
 const getVillianById = async (villianId) => {
   const villian = await Villian.findByPk(villianId, {
+    attributes: ['threatStyle'],
     include: [
       {
         model: Person,
-        as: 'person'
+        as: 'person',
+        attributes: ['name', 'age']
       }
     ]
   })
