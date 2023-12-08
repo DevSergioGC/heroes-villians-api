@@ -6,14 +6,15 @@ const {
   httpUpdateHero,
   httpDeleteHero
 } = require('./hero.controller')
+const { authenticateJWT, isAdmin } = require('../../utils/jwt.middleware')
 
 const router = express.Router()
 
 router
-  .get('/', httpGetAllHeroes)
-  .get('/:heroId', httpGetHeroById)
-  .post('/', httpCreateHero)
-  .put('/:heroId', httpUpdateHero)
-  .delete('/:heroId', httpDeleteHero)
+  .get('/', authenticateJWT, httpGetAllHeroes)
+  .get('/:heroId', authenticateJWT, httpGetHeroById)
+  .post('/', authenticateJWT, isAdmin, httpCreateHero)
+  .put('/:heroId', authenticateJWT, isAdmin, httpUpdateHero)
+  .delete('/:heroId', authenticateJWT, isAdmin, httpDeleteHero)
 
 module.exports = router
