@@ -6,7 +6,7 @@ const {
   deleteVillian
 } = require('../../services/villian.service')
 const {
-  createPerson,
+  createPersonO,
   updatePerson,
   deletePerson
 } = require('../../services/person.service')
@@ -20,7 +20,7 @@ const {
 const httpGetAllVillians = async (req, res) => {
   try {
     const villians = await getAllVillians()
-    res.status(200).json(villians)
+    res.status(villians.status).json(villians.response)
   } catch (error) {
     res.status(500).send({ error: error.message })
   }
@@ -29,7 +29,7 @@ const httpGetVillianById = async (req, res) => {
   const { villianId } = req.params
   try {
     const villian = await getVillianById(villianId)
-    res.status(200).json(villian)
+    res.status(villian.status).json(villian.response)
   } catch (error) {
     res.status(500).send({ error: error.message })
   }
@@ -44,7 +44,7 @@ const httpCreateVillian = async (req, res) => {
     res.status(400).send({ error: personValidation.error.details[0].message })
   }
   try {
-    const { id } = await createPerson(person)
+    const id = await createPersonO(person)
     const villianBody = {
       threatStyle: req.body.threatStyle
     }
@@ -60,7 +60,7 @@ const httpCreateVillian = async (req, res) => {
       personId: id
     }
     const villian = await createVillian(newVillian)
-    res.status(201).json(villian)
+    res.status(villian.status).json(villian.response)
   } catch (error) {
     res.status(500).send({ error: error.message })
   }
@@ -94,7 +94,7 @@ const httpUpdateVillian = async (req, res) => {
       age
     }
     await updatePerson(villian.personId, updatedPerson)
-    res.status(200).json(villian)
+    res.status(villian.status).json(villian.response)
   } catch (error) {
     res.status(500).send({ error: error.message })
   }
@@ -105,7 +105,7 @@ const httpDeleteVillian = async (req, res) => {
     const { personId } = await getVillianById(villianId)
     await deletePerson(personId)
     const villianDeleted = await deleteVillian(villianId)
-    res.status(200).json(villianDeleted)
+    res.status(villianDeleted.status).json(villianDeleted.response)
   } catch (error) {
     res.status(500).send({ error: error.message })
   }
