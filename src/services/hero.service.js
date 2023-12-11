@@ -1,61 +1,94 @@
-const Person = require('../database/models/person.model')
-const Hero = require('../database/models/hero.model')
-// const Location = require('../database/models/location.model')
+const { Hero, Person, Location } = require('../database/models/index')
+const { isNull } = require('../utils/utils')
 
 const getAllHeroes = async () => {
-  const heroes = await Hero.findAll({
-    attributes: ['principalPower'],
-    include: [
-      {
-        model: Person,
-        as: 'heroPerson',
-        foreignKey: 'personId',
-        attributes: ['name', 'age']
-      }
-    ]
-  })
-  if (!heroes || heroes.length === 0) {
-    return { error: 'No heroes found' }
+  try {
+    const heroes = await Hero.findAll({
+      attributes: ['id', 'principalPower'],
+      include: [
+        {
+          model: Person,
+          as: 'heroPerson',
+          foreignKey: 'personId',
+          attributes: ['id', 'name', 'age'],
+          include: [
+            {
+              model: Location,
+              as: 'location',
+              attributes: ['name', 'address']
+            }
+          ]
+        }
+      ]
+    })
+    if (isNull(heroes)) {
+      return { status: 404, response: { error: 'Heroes not found' } }
+    }
+    return { status: 200, response: heroes }
+  } catch (error) {
+    return { status: 500, response: { error: error.message } }
   }
-
-  return heroes
 }
 const getHeroById = async (heroId) => {
-  const hero = await Hero.findByPk(heroId, {
-    attributes: ['principalPower'],
-    include: [
-      {
-        model: Person,
-        as: 'person',
-        attributes: ['name', 'age']
-      }
-    ]
-  })
-  if (!hero || hero.length === 0) {
-    return { error: 'Hero does not exist' }
+  try {
+    const hero = await Hero.findByPk(heroId, {
+      attributes: ['id', 'principalPower'],
+      include: [
+        {
+          model: Person,
+          as: 'person',
+          attributes: ['id', 'name', 'age'],
+          include: [
+            {
+              model: Location,
+              as: 'location',
+              attributes: ['name', 'address']
+            }
+          ]
+        }
+      ]
+    })
+    if (isNull(hero)) {
+      return { status: 404, response: { error: 'Hero not found' } }
+    }
+    return { status: 200, response: hero }
+  } catch (error) {
+    return { status: 500, response: { error: error.message } }
   }
-
-  return hero
 }
 const createHero = async (hero) => {
-  return await Hero.create(hero)
+  try {
+    const newHero = await Hero.create(hero)
+    return { response: newHero, status: 201 }
+  } catch (error) {
+    return { status: 500, response: { error: error.message } }
+  }
 }
 const updateHero = async (heroId, updatedHero) => {
-  const hero = await Hero.findByPk(heroId)
-  if (!hero || hero.length === 0) {
-    return { error: 'Hero does not exist' }
-  }
+  try {
+    const hero = await Hero.findByPk(heroId)
+    if (isNull(hero)) {
+      return { status: 404, response: { error: 'Hero not found' } }
+    }
 
-  return await hero.update(updatedHero)
+    const newHero = await hero.update(updatedHero)
+    return { response: newHero, status: 200 }
+  } catch (error) {
+    return { status: 500, response: { error: error.message } }
+  }
 }
 const deleteHero = async (heroId) => {
-  const hero = await Hero.findByPk(heroId)
-  if (!hero || hero.length === 0) {
-    return { error: 'Hero does not exist' }
-  }
+  try {
+    const hero = await Hero.findByPk(heroId)
+    if (isNull(hero)) {
+      return { status: 404, response: { error: 'Hero not found' } }
+    }
 
-  await hero.destroy()
-  return { message: 'Hero deleted successfully' }
+    await hero.destroy()
+    return { status: 200, response: { message: 'Hero delete successfully' } }
+  } catch (error) {
+    return { status: 500, response: { error: error.message } }
+  }
 }
 
 module.exports = {

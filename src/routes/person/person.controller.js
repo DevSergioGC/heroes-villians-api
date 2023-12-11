@@ -12,12 +12,12 @@ const {
 
 const httpGetAllPersons = async (req, res) => {
   const persons = await getAllPersons()
-  res.status(200).json(persons)
+  res.status(persons.status).json(persons.response)
 }
 const httpGetPersonById = async (req, res) => {
   const { personId } = req.params
   const person = await getPersonById(personId)
-  res.status(200).json(person)
+  res.status(person.status).json(person.response)
 }
 const httpCreatePerson = async (req, res) => {
   const { error } = validatePerson(req.body)
@@ -31,7 +31,7 @@ const httpCreatePerson = async (req, res) => {
     age
   }
   const person = await createPerson(newPerson)
-  res.status(201).json(person)
+  res.status(person.status).json(person.response)
 }
 const httpUpdatePerson = async (req, res) => {
   const { error } = validateUpdatePerson(req.body)
@@ -46,12 +46,12 @@ const httpUpdatePerson = async (req, res) => {
     age
   }
   const person = await updatePerson(personId, updatedPerson)
-  res.status(200).json(person)
+  res.status(person.status).json(person.response)
 }
 const httpDeletePerson = async (req, res) => {
   const { personId } = req.params
   const person = await deletePerson(personId)
-  res.status(200).json(person)
+  res.status(person.status).json(person.response)
 }
 
 module.exports = {

@@ -13,8 +13,8 @@ const router = express.Router()
 router
   .get('/', authenticateJWT, isAdmin, httpGetAllUsers)
   .get('/:userId', authenticateJWT, isAdmin, httpGetUserById)
-  .post('/', authenticateJWT, isAdmin, httpCreateUser)
-  .post('/login', authenticateJWT, isAdmin, httpLoginUser)
+  .post('/', httpCreateUser)
+  .post('/login', httpLoginUser)
   .delete('/:userId', authenticateJWT, isAdmin, httpDeleteUser)
 
 module.exports = router
