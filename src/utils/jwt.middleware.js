@@ -7,7 +7,7 @@ const authenticateJWT = (req, res, next) => {
   const token = req.header('Authorization')
 
   if (!token) {
-    return res.status(401).json({ message: 'Unauthorized' })
+    return res.status(401).json({ message: 'Unauthorized. Needs to be logged in' })
   }
 
   jwt.verify(token, secretKey, (err, user) => {

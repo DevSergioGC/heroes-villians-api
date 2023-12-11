@@ -6,7 +6,7 @@ const {
   deleteHero
 } = require('../../services/hero.service')
 const {
-  createPerson,
+  createPersonO,
   updatePerson,
   deletePerson
 } = require('../../services/person.service')
@@ -20,7 +20,7 @@ const {
 const httpGetAllHeroes = async (req, res) => {
   try {
     const heroes = await getAllHeroes()
-    res.status(200).json(heroes)
+    res.status(heroes.status).json(heroes.response)
   } catch (error) {
     res.status(500).send({ error: error.message })
   }
@@ -29,7 +29,7 @@ const httpGetHeroById = async (req, res) => {
   const { heroId } = req.params
   try {
     const hero = await getHeroById(heroId)
-    res.status(200).json(hero)
+    res.status(hero.status).json(hero.response)
   } catch (error) {
     res.status(500).send({ error: error.message })
   }
@@ -44,7 +44,7 @@ const httpCreateHero = async (req, res) => {
     res.status(400).send({ error: personValidation.error.details[0].message })
   }
   try {
-    const { id } = await createPerson(person)
+    const id = await createPersonO(person)
     const heroBody = {
       principalPower: req.body.principalPower
     }
@@ -58,7 +58,7 @@ const httpCreateHero = async (req, res) => {
       personId: id
     }
     const hero = await createHero(newHero)
-    res.status(201).json(hero)
+    res.status(hero.status).json(hero.response)
   } catch (error) {
     res.status(500).send({ error: error.message })
   }
@@ -92,7 +92,7 @@ const httpUpdateHero = async (req, res) => {
       age
     }
     await updatePerson(hero.personId, updatedPerson)
-    res.status(200).json(hero)
+    res.status(hero.status).json(hero.response)
   } catch (error) {
     res.status(500).send({ error: error.message })
   }
@@ -103,7 +103,7 @@ const httpDeleteHero = async (req, res) => {
     const { personId } = await getHeroById(heroId)
     await deletePerson(personId)
     const heroDeleted = await deleteHero(heroId)
-    res.status(200).json(heroDeleted)
+    res.status(heroDeleted.status).json(heroDeleted.response)
   } catch (error) {
     res.status(500).send({ error: error.message })
   }

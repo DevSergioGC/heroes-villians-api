@@ -1,10 +1,11 @@
 const Location = require('../database/models/location.model')
 const Person = require('../database/models/person.model')
+const { isNull } = require('../utils/utils')
 
 const getAllLocations = async () => {
   try {
     const locations = await Location.findAll()
-    if (!locations || locations.length === 0) {
+    if (isNull(locations)) {
       return { status: 404, response: { error: 'No locations found' } }
     }
     return { status: 200, response: locations }
@@ -15,8 +16,8 @@ const getAllLocations = async () => {
 const getLocationById = async (locationId) => {
   try {
     const location = await Location.findByPk(locationId)
-    if (!location || location.length === 0) {
-      return { status: 404, response: { error: 'Location does not exist' } }
+    if (isNull(location)) {
+      return { status: 404, response: { error: 'Location not found' } }
     }
     return { status: 200, response: location }
   } catch (error) {
@@ -36,15 +37,14 @@ const assignLocation = async (locationId, personId) => {
     const location = await Location.findByPk(locationId)
     const person = await Person.findByPk(personId)
 
-    if (!location || location.length === 0) {
-      return { status: 404, response: { error: 'Location does not exist' } }
+    if (isNull(location)) {
+      return { status: 404, response: { error: 'Location not found' } }
     }
     if (!person || person.length === 0) {
-      return { status: 404, response: { error: 'Person does not exist' } }
+      return { status: 404, response: { error: 'Person not found' } }
     }
 
     const assign = await Location.assignNewLocation(locationId, personId)
-    // person.setLocation(location)
     return { status: 200, response: assign }
   } catch (error) {
     return { status: 500, response: { error: error.message } }
@@ -53,8 +53,8 @@ const assignLocation = async (locationId, personId) => {
 const updateLocation = async (locationId, updatedLocation) => {
   try {
     const location = await Location.findByPk(locationId)
-    if (!location || location.length === 0) {
-      return { status: 404, response: { error: 'Location does not exist' } }
+    if (isNull(location)) {
+      return { status: 404, response: { error: 'Location not found' } }
     }
     const updated = await location.update(updatedLocation)
     return { status: 200, response: updated }
@@ -65,8 +65,8 @@ const updateLocation = async (locationId, updatedLocation) => {
 const deleteLocation = async (locationId) => {
   try {
     const location = await Location.findByPk(locationId)
-    if (!location || location.length === 0) {
-      return { status: 404, response: { error: 'Location does not exist' } }
+    if (isNull(location)) {
+      return { status: 404, response: { error: 'Location not found' } }
     }
     await location.destroy()
     return {

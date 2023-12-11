@@ -6,10 +6,6 @@ const {
   deleteUser
 } = require('../../services/user.service')
 const { validateUser } = require('../../utils/validation/validation')
-require('dotenv').config()
-
-const bcrypt = require('bcrypt')
-const saltRounds = parseInt(process.env.SALT_ROUNDS)
 
 const httpGetAllUsers = async (req, res) => {
   try {
@@ -38,7 +34,7 @@ const httpCreateUser = async (req, res) => {
     const { username, password, isAdmin } = req.body
     const newUser = {
       username,
-      password: bcrypt.hashSync(password, saltRounds),
+      password,
       isAdmin
     }
     const user = await createUser(newUser)

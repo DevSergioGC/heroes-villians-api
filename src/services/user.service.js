@@ -1,75 +1,96 @@
 const User = require('../database/models/user.model')
 const { generateJWT } = require('../utils/jwt.middleware')
+const { isNull } = require('../utils/utils')
 
 const getAllUsers = async () => {
-  const user = await User.findAll({
-    attributes: {
-      exclude: ['password']
+  try {
+    const user = await User.findAll({
+      attributes: {
+        exclude: ['password']
+      }
+    })
+    if (isNull(user)) {
+      return { status: 404, response: { error: 'No users found' } }
     }
-  })
-  if (!user || user.length === 0) {
-    return { status: 404, response: { message: 'No users found' } }
+    return { response: { user }, status: 200 }
+  } catch (error) {
+    return { status: 500, response: { error: error.message } }
   }
-  return { response: { user }, status: 200 }
 }
 const getUserById = async (userId) => {
-  const user = await User.findByPk(userId, {
-    attributes: {
-      exclude: ['password']
+  try {
+    const user = await User.findByPk(userId, {
+      attributes: {
+        exclude: ['password']
+      }
+    })
+    if (isNull(user)) {
+      return { response: { error: 'User not found' }, status: 404 }
     }
-  })
-  if (!user || user.length === 0) {
-    return { response: { message: 'User does not exist' }, status: 404 }
+    return { response: { user }, status: 200 }
+  } catch (error) {
+    return { status: 500, response: { error: error.message } }
   }
-  return { response: { user }, status: 200 }
 }
 const createUser = async (user) => {
-  const userCreated = await User.create(user)
-  return { response: { userCreated }, status: 201 }
+  try {
+    const userCreated = await User.create(user)
+    return { response: { userCreated }, status: 201 }
+  } catch (error) {
+    return { status: 500, response: { error: error.message } }
+  }
 }
 const login = async (user) => {
-  const { username, password } = user
+  try {
+    const { username, password } = user
 
-  const foundUser = await User.findOne({
-    where: {
-      username
-    }
-  })
+    const foundUser = await User.findOne({
+      where: {
+        username
+      }
+    })
 
-  if (!foundUser) {
-    return {
-      status: 404,
-      response: {
-        message: 'User not found'
+    if (!foundUser) {
+      return {
+        status: 404,
+        response: {
+          error: 'User not found'
+        }
       }
     }
-  }
 
-  if (!User.checkPassword(password, foundUser.password)) {
-    return {
-      status: 401,
-      response: {
-        message: 'Invalid credentials'
+    if (!User.checkPassword(password, foundUser.password)) {
+      return {
+        status: 401,
+        response: {
+          error: 'Invalid credentials'
+        }
       }
     }
-  }
 
-  const token = generateJWT(foundUser)
-  return {
-    status: 200,
-    response: {
-      message: 'User logged in successfully',
-      token
+    const token = generateJWT(foundUser)
+    return {
+      status: 200,
+      response: {
+        message: 'User logged in successfully',
+        token
+      }
     }
+  } catch (error) {
+    return { status: 500, response: { error: error.message } }
   }
 }
 const deleteUser = async (userId) => {
-  const user = await User.findByPk(userId)
-  if (!user || user.length === 0) {
-    return { response: { message: 'User does not exist' }, status: 404 }
+  try {
+    const user = await User.findByPk(userId)
+    if (isNull(user)) {
+      return { response: { error: 'User not found' }, status: 404 }
+    }
+    await user.destroy()
+    return { response: { message: 'User deleted successfully' }, status: 200 }
+  } catch (error) {
+    return { status: 500, response: { error: error.message } }
   }
-  await user.destroy()
-  return { response: { message: 'User deleted successfully' }, status: 200 }
 }
 
 module.exports = {
