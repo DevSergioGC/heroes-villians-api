@@ -1,6 +1,5 @@
-const DataTypes = require('sequelize')
-const sequelize = require('../db.js')
-const Person = require('./person.model.js')
+const DataTypes = require('sequelize');
+const sequelize = require('../db.js');
 
 const Hero = sequelize.define(
   'hero',
@@ -19,17 +18,6 @@ const Hero = sequelize.define(
   {
     timestamps: false
   }
-)
+);
 
-Hero.belongsTo(
-  Person,
-  {
-    foreignKey: 'personId',
-    as: 'heroPerson'
-  },
-  {
-    timestamps: false
-  }
-)
-
-module.exports = Hero
+module.exports = Hero;

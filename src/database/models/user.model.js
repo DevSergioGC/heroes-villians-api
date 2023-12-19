@@ -1,8 +1,8 @@
-const DataTypes = require('sequelize')
-const sequelize = require('../db.js')
-const bcrypt = require('bcrypt')
-require('dotenv').config()
-const saltRounds = parseInt(process.env.SALT_ROUNDS)
+const DataTypes = require('sequelize');
+const sequelize = require('../db.js');
+const bcrypt = require('bcrypt');
+require('dotenv').config();
+const saltRounds = parseInt(process.env.SALT_ROUNDS);
 
 const User = sequelize.define(
   'user',
@@ -33,14 +33,14 @@ const User = sequelize.define(
   {
     hooks: {
       beforeCreate: (user) => {
-        user.password = bcrypt.hashSync(user.password, saltRounds)
+        user.password = bcrypt.hashSync(user.password, saltRounds);
       }
     }
   }
-)
+);
 
 User.checkPassword = (password, userPassword) => {
-  return bcrypt.compareSync(password, userPassword)
-}
+  return bcrypt.compareSync(password, userPassword);
+};
 
-module.exports = User
+module.exports = User;
