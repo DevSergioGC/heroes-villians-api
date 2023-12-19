@@ -1,4 +1,4 @@
-const express = require('express')
+const express = require('express');
 const {
   httpGetAllLocations,
   httpGetLocationById,
@@ -6,10 +6,10 @@ const {
   httpAssignLocation,
   httpUpdateLocation,
   httpDeleteLocation
-} = require('./location.controller')
-const { authenticateJWT, isAdmin } = require('../../utils/jwt.middleware')
+} = require('./location.controller');
+const { authenticateJWT, isAdmin } = require('../../utils/jwt.middleware');
 
-const router = express.Router()
+const router = express.Router();
 
 router
   .get('/', authenticateJWT, httpGetAllLocations)
@@ -17,6 +17,6 @@ router
   .post('/', authenticateJWT, isAdmin, httpCreateLocation)
   .post('/assign', authenticateJWT, isAdmin, httpAssignLocation)
   .put('/:locationId', authenticateJWT, isAdmin, httpUpdateLocation)
-  .delete('/:locationId', authenticateJWT, isAdmin, httpDeleteLocation)
+  .delete('/:locationId', authenticateJWT, isAdmin, httpDeleteLocation);
 
-module.exports = router
+module.exports = router;

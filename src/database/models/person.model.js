@@ -1,6 +1,5 @@
-const { DataTypes } = require('sequelize')
-const sequelize = require('../db.js')
-const Location = require('./location.model.js')
+const { DataTypes } = require('sequelize');
+const sequelize = require('../db.js');
 
 const Person = sequelize.define(
   'person',
@@ -39,19 +38,6 @@ const Person = sequelize.define(
   {
     timestamps: false
   }
-)
+);
 
-Person.belongsTo(
-  Location,
-  {
-    foreignKey: 'locationId',
-    as: 'location',
-    onDelete: 'CASCADE'
-  },
-  {
-    timestamps: false,
-    onDelete: 'CASCADE'
-  }
-)
-
-module.exports = Person
+module.exports = Person;
