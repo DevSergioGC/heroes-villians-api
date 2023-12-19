@@ -36,7 +36,7 @@ const getHeroById = async (heroId) => {
       include: [
         {
           model: Person,
-          as: 'person',
+          as: 'heroPerson',
           attributes: ['id', 'name', 'age'],
           include: [
             {

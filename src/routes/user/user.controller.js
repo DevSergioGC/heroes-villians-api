@@ -10,7 +10,7 @@ const { validateUser } = require('../../utils/validation/validation');
 const httpGetAllUsers = async (req, res) => {
   try {
     const users = await getAllUsers();
-    res.status(users.status).json(users.response);
+    res.status(users.status).json(users);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
@@ -19,7 +19,7 @@ const httpGetUserById = async (req, res) => {
   const { userId } = req.params;
   try {
     const user = await getUserById(userId);
-    res.status(user.status).json(user.response);
+    res.status(user.status).json(user);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
@@ -38,7 +38,7 @@ const httpCreateUser = async (req, res) => {
       isAdmin
     };
     const user = await createUser(newUser);
-    res.status(user.status).json(user.response);
+    res.status(user.status).json(user);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
@@ -54,7 +54,7 @@ const httpLoginUser = async (req, res) => {
 
   try {
     const token = await login(user);
-    return res.status(token.status).json(token.response);
+    return res.status(token.status).json(token);
   } catch (err) {
     return res.status(500).json({ message: err.message });
   }
@@ -64,7 +64,7 @@ const httpDeleteUser = async (req, res) => {
 
   try {
     const deletedUser = await deleteUser(userId);
-    res.status(deletedUser.status).json(deletedUser.response);
+    res.status(deletedUser.status).json(deletedUser);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }

@@ -36,7 +36,7 @@ const getVillianById = async (villianId) => {
       include: [
         {
           model: Person,
-          as: 'person',
+          as: 'villianPerson',
           attributes: ['id', 'name', 'age'],
           include: [
             {
