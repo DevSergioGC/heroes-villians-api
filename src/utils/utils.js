@@ -1,10 +1,10 @@
 const isNull = (entity) => {
   if (!entity || entity.length === 0) {
-    return true
+    return true;
   }
-  return false
-}
+  return false;
+};
 
 module.exports = {
   isNull
-}
+};

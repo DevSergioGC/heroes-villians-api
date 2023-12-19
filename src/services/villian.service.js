@@ -1,5 +1,5 @@
-const { Villian, Person, Location } = require('../database/models/index')
-const { isNull } = require('../utils/utils')
+const { Villian, Person, Location } = require('../database/models/index');
+const { isNull } = require('../utils/utils');
 
 const getAllVillians = async () => {
   try {
@@ -19,16 +19,16 @@ const getAllVillians = async () => {
           ]
         }
       ]
-    })
+    });
     if (isNull(villians)) {
-      return { status: 404, response: { error: 'No villians found' } }
+      return { status: 404, response: { error: 'No villians found' } };
     }
 
-    return { response: { villians }, status: 200 }
+    return { response: { villians }, status: 200 };
   } catch (error) {
-    return { status: 500, response: { error: error.message } }
+    return { status: 500, response: { error: error.message } };
   }
-}
+};
 const getVillianById = async (villianId) => {
   try {
     const villian = await Villian.findByPk(villianId, {
@@ -47,53 +47,53 @@ const getVillianById = async (villianId) => {
           ]
         }
       ]
-    })
+    });
     if (isNull(villian)) {
-      return { status: 404, response: { error: 'Villian not found' } }
+      return { status: 404, response: { error: 'Villian not found' } };
     }
 
-    return { response: { villian }, status: 200 }
+    return { response: { villian }, status: 200 };
   } catch (error) {
-    return { status: 500, response: { error: error.message } }
+    return { status: 500, response: { error: error.message } };
   }
-}
+};
 const createVillian = async (villian) => {
   try {
-    const newVillian = await Villian.create(villian)
-    return { response: { newVillian }, status: 201 }
+    const newVillian = await Villian.create(villian);
+    return { response: { newVillian }, status: 201 };
   } catch (error) {
-    return { status: 500, response: { error: error.message } }
+    return { status: 500, response: { error: error.message } };
   }
-}
+};
 const updateVillian = async (villianId, updatedVillian) => {
   try {
-    const villian = await Villian.findByPk(villianId)
+    const villian = await Villian.findByPk(villianId);
     if (isNull(villian)) {
-      return { status: 404, response: { error: 'Villian not found' } }
+      return { status: 404, response: { error: 'Villian not found' } };
     }
 
-    const newVillian = await villian.update(updatedVillian)
-    return { response: { newVillian }, status: 200 }
+    const newVillian = await villian.update(updatedVillian);
+    return { response: { newVillian }, status: 200 };
   } catch (error) {
-    return { status: 500, response: { error: error.message } }
+    return { status: 500, response: { error: error.message } };
   }
-}
+};
 const deleteVillian = async (villianId) => {
   try {
-    const villian = await Villian.findByPk(villianId)
+    const villian = await Villian.findByPk(villianId);
     if (isNull(villian)) {
-      return { status: 404, response: { error: 'Villian not found' } }
+      return { status: 404, response: { error: 'Villian not found' } };
     }
 
-    await villian.destroy()
+    await villian.destroy();
     return {
       status: 200,
       response: { message: 'Villian deleted successfully' }
-    }
+    };
   } catch (error) {
-    return { status: 500, response: { error: error.message } }
+    return { status: 500, response: { error: error.message } };
   }
-}
+};
 
 module.exports = {
   getAllVillians,
@@ -101,4 +101,4 @@ module.exports = {
   createVillian,
   updateVillian,
   deleteVillian
-}
+};
