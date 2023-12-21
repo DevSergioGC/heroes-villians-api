@@ -19,8 +19,9 @@ const {
 
 const httpGetAllVillians = async (req, res) => {
   try {
-    const villians = await getAllVillians();
-    res.status(villians.status).json(villians.response);
+    const { page, size } = req.query;
+    const villians = await getAllVillians(page, size);
+    res.status(villians.status).json(villians);
   } catch (error) {
     res.status(500).send({ error: error.message });
   }
@@ -29,7 +30,7 @@ const httpGetVillianById = async (req, res) => {
   const { villianId } = req.params;
   try {
     const villian = await getVillianById(villianId);
-    res.status(villian.status).json(villian.response);
+    res.status(villian.status).json(villian);
   } catch (error) {
     res.status(500).send({ error: error.message });
   }
@@ -60,7 +61,7 @@ const httpCreateVillian = async (req, res) => {
       personId: id
     };
     const villian = await createVillian(newVillian);
-    res.status(villian.status).json(villian.response);
+    res.status(villian.status).json(villian);
   } catch (error) {
     res.status(500).send({ error: error.message });
   }
@@ -94,7 +95,7 @@ const httpUpdateVillian = async (req, res) => {
       age
     };
     await updatePerson(villian.personId, updatedPerson);
-    res.status(villian.status).json(villian.response);
+    res.status(villian.status).json(villian);
   } catch (error) {
     res.status(500).send({ error: error.message });
   }
@@ -105,7 +106,7 @@ const httpDeleteVillian = async (req, res) => {
     const { personId } = await getVillianById(villianId);
     await deletePerson(personId);
     const villianDeleted = await deleteVillian(villianId);
-    res.status(villianDeleted.status).json(villianDeleted.response);
+    res.status(villianDeleted.status).json(villianDeleted);
   } catch (error) {
     res.status(500).send({ error: error.message });
   }

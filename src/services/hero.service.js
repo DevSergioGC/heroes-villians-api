@@ -1,9 +1,11 @@
 const { Hero, Person, Location } = require('../database/models/index');
-const { isNull } = require('../utils/utils');
+const { isNull, getPagination, getPagingData } = require('../utils/utils');
 
-const getAllHeroes = async () => {
+const getAllHeroes = async (page, size) => {
   try {
-    const heroes = await Hero.findAll({
+    const { limit, offset } = getPagination(page, size);
+
+    const heroes = await Hero.findAndCountAll({
       attributes: ['id', 'principalPower'],
       include: [
         {
@@ -19,7 +21,12 @@ const getAllHeroes = async () => {
             }
           ]
         }
-      ]
+      ],
+      limit,
+      offset
+    }).then((data) => {
+      const response = getPagingData(data, page, limit);
+      return response;
     });
     if (isNull(heroes)) {
       return { status: 404, response: { error: 'Heroes not found' } };
@@ -36,7 +43,7 @@ const getHeroById = async (heroId) => {
       include: [
         {
           model: Person,
-          as: 'person',
+          as: 'heroPerson',
           attributes: ['id', 'name', 'age'],
           include: [
             {
