@@ -1,13 +1,19 @@
 const User = require('../database/models/user.model');
 const { generateJWT } = require('../utils/jwt.middleware');
-const { isNull } = require('../utils/utils');
+const { isNull, getPagination, getPagingData } = require('../utils/utils');
 
-const getAllUsers = async () => {
+const getAllUsers = async (page, size) => {
   try {
-    const user = await User.findAll({
+    const { limit, offset } = getPagination(page, size);
+    const user = await User.findAndCountAll({
       attributes: {
         exclude: ['password']
-      }
+      },
+      limit,
+      offset
+    }).then((data) => {
+      const response = getPagingData(data, page, limit);
+      return response;
     });
     if (isNull(user)) {
       return { status: 404, response: { error: 'No users found' } };

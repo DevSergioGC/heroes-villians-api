@@ -14,7 +14,8 @@ const {
 
 const httpGetAllLocations = async (req, res) => {
   try {
-    const locations = await getAllLocations();
+    const { page, size } = req.query;
+    const locations = await getAllLocations(page, size);
     res.status(locations.status).json(locations);
   } catch (error) {
     res.status(500).json({ error: error.message });

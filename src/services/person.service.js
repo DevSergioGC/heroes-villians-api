@@ -1,10 +1,12 @@
 const Person = require('../database/models/person.model');
 const Location = require('../database/models/location.model');
-const { isNull } = require('../utils/utils');
+const { isNull, getPagination, getPagingData } = require('../utils/utils');
 
-const getAllPersons = async () => {
+const getAllPersons = async (page, size) => {
   try {
-    const person = await Person.findAll({
+    const { limit, offset } = getPagination(page, size);
+
+    const person = await Person.findAndCountAll({
       attributes: ['id', 'name', 'age'],
       include: [
         {
@@ -12,13 +14,18 @@ const getAllPersons = async () => {
           as: 'location',
           attributes: ['name', 'address']
         }
-      ]
+      ],
+      limit,
+      offset
+    }).then((data) => {
+      const response = getPagingData(data, page, limit);
+      return response;
     });
     if (isNull(person)) {
       return { status: 404, response: { error: 'Persons not found' } };
     }
 
-    return { response: { person }, status: 200 };
+    return { status: 200, response: person };
   } catch (error) {
     return { status: 500, response: { error: error.message } };
   }

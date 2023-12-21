@@ -19,7 +19,8 @@ const {
 
 const httpGetAllVillians = async (req, res) => {
   try {
-    const villians = await getAllVillians();
+    const { page, size } = req.query;
+    const villians = await getAllVillians(page, size);
     res.status(villians.status).json(villians);
   } catch (error) {
     res.status(500).send({ error: error.message });

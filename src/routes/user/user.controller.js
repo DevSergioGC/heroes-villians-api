@@ -9,7 +9,8 @@ const { validateUser } = require('../../utils/validation/validation');
 
 const httpGetAllUsers = async (req, res) => {
   try {
-    const users = await getAllUsers();
+    const { page, size } = req.query;
+    const users = await getAllUsers(page, size);
     res.status(users.status).json(users);
   } catch (error) {
     res.status(500).json({ message: error.message });

@@ -11,7 +11,8 @@ const {
 } = require('../../utils/validation/validation');
 
 const httpGetAllPersons = async (req, res) => {
-  const persons = await getAllPersons();
+  const { page, size } = req.query;
+  const persons = await getAllPersons(page, size);
   res.status(persons.status).json(persons);
 };
 const httpGetPersonById = async (req, res) => {

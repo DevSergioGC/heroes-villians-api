@@ -1,9 +1,10 @@
 const { Villian, Person, Location } = require('../database/models/index');
-const { isNull } = require('../utils/utils');
+const { isNull, getPagination, getPagingData } = require('../utils/utils');
 
-const getAllVillians = async () => {
+const getAllVillians = async (page, size) => {
   try {
-    const villians = await Villian.findAll({
+    const { limit, offset } = getPagination(page, size);
+    const villians = await Villian.findAndCountAll({
       attributes: ['id', 'threatStyle'],
       include: [
         {
@@ -18,7 +19,12 @@ const getAllVillians = async () => {
             }
           ]
         }
-      ]
+      ],
+      limit,
+      offset
+    }).then((data) => {
+      const response = getPagingData(data, page, limit);
+      return response;
     });
     if (isNull(villians)) {
       return { status: 404, response: { error: 'No villians found' } };

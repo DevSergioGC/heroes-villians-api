@@ -19,7 +19,8 @@ const {
 
 const httpGetAllHeroes = async (req, res) => {
   try {
-    const heroes = await getAllHeroes();
+    const { page, size } = req.query;
+    const heroes = await getAllHeroes(page, size);
     res.status(heroes.status).json(heroes);
   } catch (error) {
     res.status(500).send({ error: error.message });
