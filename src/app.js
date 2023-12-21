@@ -1,6 +1,8 @@
 /* eslint-disable no-unused-vars */
 const express = require('express');
 const sequelize = require('./database/db');
+const logger = require('./utils/logger.config');
+const morgan = require('morgan');
 
 // ? Routes
 const personRoutes = require('./routes/person/person.router');
@@ -18,6 +20,12 @@ const User = require('./database/models/user.model');
 const app = express();
 
 app.use(express.json());
+app.use(morgan('combined'));
+
+app.use((req, res, next) => {
+  logger.info(`${req.method} ${req.url}`);
+  next();
+});
 
 app.use('/person', personRoutes);
 app.use('/hero', heroRoutes);
