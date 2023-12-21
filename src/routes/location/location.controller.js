@@ -14,8 +14,9 @@ const {
 
 const httpGetAllLocations = async (req, res) => {
   try {
-    const locations = await getAllLocations();
-    res.status(locations.status).json(locations.response);
+    const { page, size } = req.query;
+    const locations = await getAllLocations(page, size);
+    res.status(locations.status).json(locations);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
@@ -24,7 +25,7 @@ const httpGetLocationById = async (req, res) => {
   try {
     const { locationId } = req.params;
     const location = await getLocationById(locationId);
-    res.status(location.status).json(location.response);
+    res.status(location.status).json(location);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
@@ -42,7 +43,7 @@ const httpCreateLocation = async (req, res) => {
       address
     };
     const location = await createLocation(newLocation);
-    res.status(location.status).json(location.response);
+    res.status(location.status).json(location);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
@@ -56,7 +57,7 @@ const httpAssignLocation = async (req, res) => {
 
     const { personId, locationId } = req.body;
     const location = await assignLocation(locationId, personId);
-    res.status(location.status).json(location.response);
+    res.status(location.status).json(location);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
@@ -75,7 +76,7 @@ const httpUpdateLocation = async (req, res) => {
       address
     };
     const location = await updateLocation(locationId, updatedLocation);
-    res.status(location.status).json(location.response);
+    res.status(location.status).json(location);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
@@ -84,7 +85,7 @@ const httpDeleteLocation = async (req, res) => {
   try {
     const { locationId } = req.params;
     const location = await deleteLocation(locationId);
-    res.status(location.status).json(location.response);
+    res.status(location.status).json(location);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }

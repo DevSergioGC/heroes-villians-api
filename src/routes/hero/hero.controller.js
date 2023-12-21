@@ -19,7 +19,8 @@ const {
 
 const httpGetAllHeroes = async (req, res) => {
   try {
-    const heroes = await getAllHeroes();
+    const { page, size } = req.query;
+    const heroes = await getAllHeroes(page, size);
     res.status(heroes.status).json(heroes);
   } catch (error) {
     res.status(500).send({ error: error.message });
@@ -29,7 +30,7 @@ const httpGetHeroById = async (req, res) => {
   const { heroId } = req.params;
   try {
     const hero = await getHeroById(heroId);
-    res.status(hero.status).json(hero.response);
+    res.status(hero.status).json(hero);
   } catch (error) {
     res.status(500).send({ error: error.message });
   }
@@ -58,7 +59,7 @@ const httpCreateHero = async (req, res) => {
       personId: id
     };
     const hero = await createHero(newHero);
-    res.status(hero.status).json(hero.response);
+    res.status(hero.status).json(hero);
   } catch (error) {
     res.status(500).send({ error: error.message });
   }
@@ -92,7 +93,7 @@ const httpUpdateHero = async (req, res) => {
       age
     };
     await updatePerson(hero.personId, updatedPerson);
-    res.status(hero.status).json(hero.response);
+    res.status(hero.status).json(hero);
   } catch (error) {
     res.status(500).send({ error: error.message });
   }
@@ -103,7 +104,7 @@ const httpDeleteHero = async (req, res) => {
     const { personId } = await getHeroById(heroId);
     await deletePerson(personId);
     const heroDeleted = await deleteHero(heroId);
-    res.status(heroDeleted.status).json(heroDeleted.response);
+    res.status(heroDeleted.status).json(heroDeleted);
   } catch (error) {
     res.status(500).send({ error: error.message });
   }
