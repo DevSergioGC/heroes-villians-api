@@ -1,13 +1,10 @@
 const request = require('supertest');
 const app = require('../../app');
-const sequelize = require('../../database/db');
 const { httpGetAllPersons } = require('./person.controller');
 
 let token = '';
 
 beforeAll(async () => {
-  await sequelize.sync({ force: false });
-
   const loginResponse = await request(app)
     .post('/user/login')
     .send({ username: 'admin1', password: 'Hola1234' });
